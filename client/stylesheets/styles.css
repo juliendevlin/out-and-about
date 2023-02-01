@@ -354,10 +354,15 @@ body {
   font-size: 10px;
 }
 
+/* entry buttons */
+.entry-buttons {
+  grid-row: 3;
+}
+
 /* divider */
 .entry-item-divider {
   grid-column: 1 / 4;
-  grid-row: 3;
+  grid-row: 4;
   width: 100%;
   border-top: 0.5px solid rgb(31,81,63);
 }

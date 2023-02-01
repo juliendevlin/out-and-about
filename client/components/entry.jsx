@@ -20,7 +20,8 @@ const Entry= (props) => {
     country, 
     note, 
     timestamp,
-    displayStartMonth
+    displayStartMonth,
+    handleEntryDelete
   } = props;
 
   return (
@@ -53,6 +54,9 @@ const Entry= (props) => {
         <p>{note}</p>
         <small>{`Posted on ${timestamp}`}</small>
       </div>
+
+      <button className="entry-buttons">Update Me</button>
+      <button className="entry-buttons" onClick={() => handleEntryDelete(id)}>Delete Me</button>
 
       <hr className="entry-item-divider" />
     </div>

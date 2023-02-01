@@ -107,5 +107,15 @@ module.exports = {
   insertEntryRoute: `
     INSERT INTO entry_routes (entry_id, route_id, rating)
       VALUES ($1, $2, $3)
+  `,
+  // remove entry routes
+  removeEntryRoutes:`
+    DELETE FROM entry_routes
+    WHERE entry_routes.entry_id = ($1)
+  `,
+  // remove entry
+  removeEntry:`
+    DELETE FROM entries
+    WHERE entries._id = ($1)
   `
 }

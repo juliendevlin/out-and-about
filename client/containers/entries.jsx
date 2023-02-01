@@ -4,7 +4,7 @@ import Entry from '../components/entry.jsx'
 /* -- ENTRIES CONTAINER -- */
 const Entries = (props) => {
   // Destructure entries from state
-  const { entries } = props;
+  const { entries, handleEntryDelete } = props;
 
   // Intialize variables to track date from previous iteration when creating list
   let previousStartMonth = null;
@@ -50,6 +50,7 @@ const Entries = (props) => {
         note={entry.note}
         timestamp={timestamp}
         displayStartMonth={displayStartMonth}
+        handleEntryDelete={handleEntryDelete}
       />
     );
   });

@@ -3,6 +3,7 @@ const queries = require('../models/form-queries');
 
 const formController = {}
 
+// Queries database for form dropdown options
 formController.getFormOptions = (req, res, next) => {
   db.query(queries.selectActivities)
     .then(activities => {

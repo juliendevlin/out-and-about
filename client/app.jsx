@@ -57,7 +57,7 @@ const App = () => {
     e.preventDefault();
 
     // Create http request body with controlled form component values
-    const reqBody = {
+    const entryToCreate = {
       country: currentCountry,
       region: currentRegion,
       location: currentLocation,
@@ -77,7 +77,7 @@ const App = () => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(reqBody)
+        body: JSON.stringify(entryToCreate)
       });
 
       if (response.status !== 201) {
@@ -116,6 +116,32 @@ const App = () => {
     catch (err) {
       // Console log any caught errors
       console.log(err);
+    }
+  }
+
+  // Handler to delete an entry
+  const handleEntryDelete = async (entryId) => {
+
+    // Create request body with passed in id of the entry
+    const entryToDelete = { entryId }
+
+    // Send DELETE request
+    const response = await fetch('/entries', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(entryToDelete)
+    })
+
+    if (response.status !== 200) {
+      // Throw an error if request is not successful
+      const error = await response.json();
+      throw new Error(error);
+    }
+    else {
+      // If successful, remove deleted entry from rendered list of entries
+      setEntries(entries.filter((entry => entry.entry_id !== entryId)));
     }
   }
 
@@ -180,6 +206,7 @@ const App = () => {
       />
       <Entries
         entries = {entries}
+        handleEntryDelete={handleEntryDelete}
       />
     </div>
   );

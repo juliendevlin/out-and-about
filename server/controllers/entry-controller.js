@@ -3,9 +3,9 @@ const queries = require('../models/entry-queries')
 
 const entryController = {}
 
-// get entry info from all columns in db, ordered by entry start date
+// Get entry info from all columns in database, ordered by entry start date
 entryController.getEntries = (req, res, next) => {
-  // check if entry id stored in locals, if so add a where condition to query
+  // Check if entry id stored in locals, if so add a where condition to query for that entry, if not query for all entries
   let selectQuery = queries.selectAll;
   const queryParams = [];
 
@@ -16,7 +16,7 @@ entryController.getEntries = (req, res, next) => {
   
   selectQuery += 'ORDER BY entries.start_date DESC';
 
-  // query for all columns in all tables, and save to locals
+  // Query for all columns in all tables and save to locals
   db.query(selectQuery, queryParams)
   .then(data => {
     res.locals.entries = data.rows;
@@ -26,30 +26,30 @@ entryController.getEntries = (req, res, next) => {
     return next({
       log: `ERROR - entryController.getEntries: ${err}`,
       message: {err: 'Failed to retrieve entries from database. Check server log for details.'}
-    })
+    });
   });
 }
 
 entryController.setEntry = (req, res, next) => {
-  // initialize variables for storage during transaction
+  // Initialize variables for storage during transaction
   let regionId;
   let countryId;
   let locationId;
   let routeId;
   let entryId;
 
-  // destrcture request body properties to use for transaction
+  // Destrcture request body properties to use for transaction
   const { country, region, location, route, typeId, difficultyId, note, startDate, endDate, rating } = req.body;
 
-  // begin transaction
+  // Begin transaction
   db.query('BEGIN')
-    // search for country, insert if not found
+    // Search for country, insert if not found
     .then(() => db.query(queries.selectCountry, [country]))
     .then(countryQuery => {
       if (countryQuery.rows[0]) return countryQuery; 
       return db.query(queries.insertCountry, [country]);
     })
-    // search for region, insert if not found
+    // Search for region, insert if not found
     .then(countryQuery => {
       countryId = countryQuery.rows[0]._id;
       return db.query(queries.selectRegion, [region]);
@@ -58,7 +58,7 @@ entryController.setEntry = (req, res, next) => {
       if (regionQuery.rows[0]) return regionQuery;
       return db.query(queries.insertRegion, [region]);
     })
-    // search for location, insert if not found
+    // Search for location, insert if not found
     .then(regionQuery => {
       regionId = regionQuery.rows[0]._id;
       return db.query(queries.selectLocation, [location, regionId, countryId]);
@@ -67,7 +67,7 @@ entryController.setEntry = (req, res, next) => {
       if (locationQuery.rows[0]) return locationQuery;
       return db.query(queries.insertLocation, [location, regionId, countryId]);
     })
-    // search for route, insert if not found
+    // Search for route, insert if not found
     .then(locationQuery => {
       locationId = locationQuery.rows[0]._id;
       return db.query(queries.selectRoute, [route, typeId, difficultyId, locationId]);
@@ -76,32 +76,50 @@ entryController.setEntry = (req, res, next) => {
       if (routeQuery.rows[0]) return routeQuery;
       return db.query(queries.insertRoute, [route, typeId, difficultyId, locationId]);
     })
-    // insert entry
+    // Insert entry
     .then(routeQuery => {
       routeId = routeQuery.rows[0]._id;
       return db.query(queries.insertEntry, [note, startDate, endDate, 1]);
     })
-    // insert entry route
+    // Insert entry route
     .then(entryQuery => {
       entryId = entryQuery.rows[0]._id;
       return db.query(queries.insertEntryRoute, [entryId, routeId, rating]);
     })
-    // commit the transaction
+    // Commit the transaction
     .then(() => {
       return db.query('COMMIT')
     })
-    // store the entry id, move to next middleware
+    // Store the entry id
     .then(() => {
       res.locals.entryId = entryId;
       return next();
     })
-    // catch any errors from the query
+    // Catch any errors from the transaction
     .catch(err => {
       return next({
         log: `ERROR - entryController.setEntries: ${err}`,
         message: {err: 'Failed to create entry in database. Check server log for details.'}
       });
     });
-};
+}
+
+// Deletes an entry from database
+entryController.deleteEntry = (req, res, next) => {
+  // Destructure entry ID for entry to delete
+  const { entryId } = req.body;
+
+  // Delete database records of the entry from entry_routes and the entry record from entries
+  db.query('BEGIN')
+    .then(() => db.query(queries.removeEntryRoutes, [entryId]))
+    .then(() => db.query(queries.removeEntry, [entryId]))
+    .then(() => next())
+    .catch((err) => {
+      next({
+        log: `ERROR - entryController.deleteEntries: ${err}`,
+        message: {err: 'Failed to delete entry in database. Check server log for details.'}
+      });
+    });
+}
 
 module.exports = entryController;
