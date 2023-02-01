@@ -21,7 +21,7 @@ const Entry= (props) => {
     note, 
     timestamp,
     displayStartMonth,
-    handleEntryDelete
+    handleConfirmDelete
   } = props;
 
   return (
@@ -56,7 +56,7 @@ const Entry= (props) => {
       </div>
 
       <button className="entry-buttons">Update Me</button>
-      <button className="entry-buttons" onClick={() => handleEntryDelete(id)}>Delete Me</button>
+      <button className="entry-buttons" onClick={() => handleConfirmDelete(id)}>Delete Me</button>
 
       <hr className="entry-item-divider" />
     </div>

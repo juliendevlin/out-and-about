@@ -30,7 +30,7 @@ app.post('/entries',
 
 // Delete entry route
 app.delete('/entries',
-  // entryController.deleteEntry,
+  entryController.deleteEntry,
   (req, res) => {
     return res.sendStatus(200);
   });

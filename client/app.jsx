@@ -26,6 +26,9 @@ const App = () => {
   const [ selectedEndDate, setSelectedEndDate ] = useState('');
   const [ currentNote, setCurrentNote ] = useState('');
 
+  // State of popup prompts
+  const [ confirmDelete, setConfirmDelete ] = useState(false);
+
   // Handler to update state of controlled form component values
   const handleFormChange = (e) => {
     if (e.target.name === 'activity') {
@@ -119,9 +122,13 @@ const App = () => {
     }
   }
 
+  // Handler to display prompt to confirm deletion
+  const handleConfirmDelete = (entryId) => {
+    setConfirmDelete(entryId);
+  }
+
   // Handler to delete an entry
   const handleEntryDelete = async (entryId) => {
-
     // Create request body with passed in id of the entry
     const entryToDelete = { entryId }
 
@@ -142,6 +149,9 @@ const App = () => {
     else {
       // If successful, remove deleted entry from rendered list of entries
       setEntries(entries.filter((entry => entry.entry_id !== entryId)));
+
+      // Remove confirm prompt
+      setConfirmDelete(false);
     }
   }
 
@@ -206,6 +216,8 @@ const App = () => {
       />
       <Entries
         entries = {entries}
+        confirmDelete={confirmDelete}
+        handleConfirmDelete={handleConfirmDelete}
         handleEntryDelete={handleEntryDelete}
       />
     </div>

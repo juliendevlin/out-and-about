@@ -113,6 +113,7 @@ entryController.deleteEntry = (req, res, next) => {
   db.query('BEGIN')
     .then(() => db.query(queries.removeEntryRoutes, [entryId]))
     .then(() => db.query(queries.removeEntry, [entryId]))
+    .then(() => db.query('COMMIT'))
     .then(() => next())
     .catch((err) => {
       next({

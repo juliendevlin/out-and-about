@@ -1,10 +1,15 @@
 import React from 'react';
 import Entry from '../components/entry.jsx'
+import ConfirmDeletePrompt from '../components/confirm-delete-prompt.jsx'
 
-/* -- ENTRIES CONTAINER -- */
 const Entries = (props) => {
   // Destructure entries from state
-  const { entries, handleEntryDelete } = props;
+  const { 
+    entries, 
+    handleEntryDelete,
+    confirmDelete,
+    handleConfirmDelete
+  } = props;
 
   // Intialize variables to track date from previous iteration when creating list
   let previousStartMonth = null;
@@ -50,7 +55,7 @@ const Entries = (props) => {
         note={entry.note}
         timestamp={timestamp}
         displayStartMonth={displayStartMonth}
-        handleEntryDelete={handleEntryDelete}
+        handleConfirmDelete={handleConfirmDelete}
       />
     );
   });
@@ -59,16 +64,13 @@ const Entries = (props) => {
   return(
     <div id="entry-item-container">
       {entryItemList}
+      <ConfirmDeletePrompt
+        confirmDelete={confirmDelete}
+        handleEntryDelete={handleEntryDelete}
+        handleConfirmDelete={handleConfirmDelete}
+      />
     </div>
   );
 }
 
 export default Entries;
-
-// dates
-  // declare previous start date var outside of loop
-  // declare displayMonth var outside of loop
-  // if previous start date's month === current start date's month set displayMonth to flase
-  // otherwise set to true
-
-  // in component add class that displays svg conditionally
