@@ -5,37 +5,45 @@ import Entries from './containers/entries.jsx';
 
 /* -- MAIN APP -- */
 const App = () => {
-  // Create state for list of entries
+  // State of existing entry records
   const [ entries, setEntries ] = useState([]);
 
-  // Create state for form dropdown options
+  // State of form dropdown options
   const [ activities, setActivities ] = useState([]);
   const [ types, setTypes ] = useState([]);
   const [ difficulties, setDifficulties ] = useState([]);
 
-  // Create state for form values
-  const [ selectedActivity, setSelectedActivity ] = useState(null);
-  const [ selectedType, setSelectedType ] = useState(null);
-  const [ selectedDifficulty, setSelectedDifficulty ] = useState(null);
+  // State of conrolled form component
+  const [ selectedActivity, setSelectedActivity ] = useState('');
+  const [ selectedType, setSelectedType ] = useState('');
+  const [ selectedDifficulty, setSelectedDifficulty ] = useState('');
   const [ currentRoute, setCurrentRoute ] = useState('');
-  const [ selectedRating, setSelectedRating ] = useState(null);
+  const [ selectedRating, setSelectedRating ] = useState(0);
   const [ currentLocation, setCurrentLocation ] = useState('');
   const [ currentRegion, setCurrentRegion ] = useState('');
   const [ currentCountry, setCurrentCountry ] = useState('');
-  const [ selectedStartDate, setSelectedStartDate ] = useState(null);
-  const [ selectedEndDate, setSelectedEndDate ] = useState(null);
+  const [ selectedStartDate, setSelectedStartDate ] = useState('');
+  const [ selectedEndDate, setSelectedEndDate ] = useState('');
   const [ currentNote, setCurrentNote ] = useState('');
 
-  // handler for updating state on change in form fields
+  // Handler to update state of controlled form component values
   const handleFormChange = (e) => {
     if (e.target.name === 'activity') {
-      setSelectedActivity(e.target.value);
-      setSelectedType(null);
+      setSelectedActivity(Number(e.target.value));
+
+      const defaultType = types.filter(type => type.activity_id === Number(e.target.value))[0]._id
+      setSelectedType(defaultType)
+
+      const defaultDifficulty = difficulties.filter(difficulty => difficulty.type_id === defaultType)[0]._id
+      setSelectedDifficulty(defaultDifficulty)
     }
-    if (e.target.name === 'type') setSelectedType(e.target.value);
-    if (e.target.name === 'difficulty') setSelectedDifficulty(e.target.value);
+    if (e.target.name === 'type') {
+      setSelectedType(Number(e.target.value));
+      setSelectedDifficulty(difficulties.filter(difficulty => difficulty.type_id === Number(e.target.value))[0]._id)
+    }
+    if (e.target.name === 'difficulty') setSelectedDifficulty(Number(e.target.value));
     if (e.target.name === 'route') setCurrentRoute(e.target.value);
-    if (e.target.name === 'rating') setSelectedRating(e.target.value);
+    if (e.target.name === 'rating') setSelectedRating(Number(e.target.value));
     if (e.target.name === 'location')setCurrentLocation(e.target.value);
     if (e.target.name === 'region') setCurrentRegion(e.target.value);
     if (e.target.name === 'country') setCurrentCountry(e.target.value);
@@ -44,32 +52,26 @@ const App = () => {
     if (e.target.name === 'note') setCurrentNote(e.target.value);
   }
 
-  // handler for submiting an entry
+  // Handler to submit controlled form component values and create new entry record
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    
-    // set up request body
-    const typeId = types.filter(type => type.type === selectedType)[0]._id
-    const difficultyId = difficulties.filter(difficulty => difficulty.difficulty === selectedDifficulty)[0]._id
-
+    // Create http request body with controlled form component values
     const reqBody = {
       country: currentCountry,
       region: currentRegion,
       location: currentLocation,
       route: currentRoute,
-      typeId: typeId,
-      difficultyId: difficultyId,
+      typeId: selectedType,
+      difficultyId: selectedDifficulty,
       note: currentNote,
       startDate: selectedStartDate,
       endDate: selectedEndDate,
       rating: selectedRating
     }
-    
-    console.log(reqBody); //remove
 
     try {
-      // send request
+      // Send POST request
       const response = await fetch('/entries', {
         method: 'POST',
         headers: {
@@ -77,41 +79,47 @@ const App = () => {
         },
         body: JSON.stringify(reqBody)
       });
+
       if (response.status !== 201) {
+        // Throw an error if request is not successful
         const error = await response.json();
         throw new Error(error);
       }
       else {
+        // If successful, add the created entry to the state of entry records in the correctly sorted position
         const createdEntry = await response.json();
-        // update entries state with created entry
-        console.log('createdEntry', createdEntry)
+
         setEntries([...entries, ...createdEntry].sort((a, b) => {
           return new Date(b.start_date) - new Date(a.start_date)
         }));
       
-        console.log('entries', entries)
-        //todo
-        // reset form values (need to set up values pulling from state?)
-        // setSelectedActivity(null);
-        // setSelectedType(null);
-        // setSelectedDifficulty(null);
-        // setCurrentRoute('');
-        // setSelectedRating(null);
-        // setCurrentLocation('');
-        // setCurrentRegion('');
-        // setCurrentCountry('');
-        // setSelectedStartDate(null);
-        // setSelectedEndDate(null);
-        // setCurrentNote('');
+        // Reset controlled form component values
+        const defaultActivity = activities[0]._id
+        setSelectedActivity(defaultActivity);
+
+        const defaultType = types.filter(type => type.activity_id === defaultActivity)[0]._id
+        setSelectedType(defaultType);
+
+        const defaultDifficulty = difficulties.filter(difficulty => difficulty.type_id === defaultType)[0]._id
+        setSelectedDifficulty(defaultDifficulty);
+
+        setCurrentRoute('');
+        setSelectedRating(0);
+        setCurrentLocation('');
+        setCurrentRegion('');
+        setCurrentCountry('');
+        setSelectedStartDate('');
+        setSelectedEndDate('');
+        setCurrentNote('');
       }
     }
     catch (err) {
+      // Console log any caught errors
       console.log(err);
-      // todo: user side error handling?
     }
   }
 
-  // Update list of entries on mount
+  // Fetch and update entry records state on mount
   useEffect(() => {
     const fetchEntries = async () => {
       const response = await fetch('/entries');
@@ -123,7 +131,7 @@ const App = () => {
     fetchEntries();
   }, []);
 
-  // Update form dropdowns on mount
+  // Fetch and update form dropdowns state and set initial dropdown selections on mount
   useEffect(() => {
     const fetchDropdowns = async () => {
       const response = await fetch('/form');
@@ -132,12 +140,23 @@ const App = () => {
       setActivities(formDropdowns.activities);
       setTypes(formDropdowns.types);
       setDifficulties(formDropdowns.difficulties);
+
+      const defaultActivity = formDropdowns.activities[0]._id
+      setSelectedActivity(defaultActivity);
+
+      const defaultType = formDropdowns.types.filter(type => type.activity_id === defaultActivity)[0]._id
+      setSelectedType(defaultType);
+
+      const defaultDifficulty = formDropdowns.difficulties.filter(difficulty => difficulty.type_id === defaultType)[0]._id
+      setSelectedDifficulty(defaultDifficulty);
     }
-  
+
     fetchDropdowns();
   }, []);
 
-  // render form and entry containers, passing down their props
+  // render Header, Form, and Entries containers
+    // Drill down dropdown options, controlled form component values and handlers into Form
+    // Drill down entries records into Entries
   return(
     <div id='main-container'>
       <Header />
@@ -147,6 +166,15 @@ const App = () => {
         difficulties={difficulties}
         selectedActivity={selectedActivity}
         selectedType={selectedType}
+        selectedDifficulty={selectedDifficulty}
+        currentRoute={currentRoute}
+        selectedRating={selectedRating}
+        currentLocation={currentLocation}
+        currentRegion={currentRegion}
+        currentCountry={currentCountry}
+        selectedStartDate={selectedStartDate}
+        selectedEndDate={selectedEndDate}
+        currentNote={currentNote}
         handleFormChange={handleFormChange}
         handleFormSubmit={handleFormSubmit}
       />

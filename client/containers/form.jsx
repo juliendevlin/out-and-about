@@ -2,86 +2,77 @@ import React from 'react';
 
 /* -- FORM CONTAINER -- */
 const Form = (props) => {
-  // destrcture props
+  // Destructure drilled props: dropdown options, controlled form component values, handlers
   const { 
     activities,
     types, 
     difficulties, 
     selectedActivity, 
-    selectedType, 
+    selectedType,
+    selectedDifficulty,
+    currentRoute,
+    selectedRating,
+    currentLocation,
+    currentRegion,
+    currentCountry,
+    selectedStartDate,
+    selectedEndDate,
+    currentNote,
     handleFormChange, 
     handleFormSubmit 
   } = props;
 
-  // create dropdown list options for activities dropdown
+  // Create dropdown options for activities, types and difficulties based on state values
   const activitiesList = activities.map(activity => {
     return (
-      <option id={`activity-${activity._id}`} key={activity._id} value={activity.activity}>{activity.activity}</option>
+      <option key={activity._id} value={activity._id}>{activity.activity}</option>
     );
   })
 
-  activitiesList.unshift(<option selected disabled hidden id="activity-0" key="0" value={null}>What mountain did you climb today?</option>);
-
-  // create dropdown list options for types dropdown & set convention
-  const typesList = types
-    .filter(type => {
-      return type.activity === selectedActivity;
-    })
+  const typesList = types.filter(type => type.activity_id === Number(selectedActivity))
     .map(type => {
       return (
-        <option id={`type-${type._id}`} key={type._id} value={type.type}>{type.type}</option>
+        <option key={type._id} value={type._id}>{type.type}</option>
       );
     });
 
-  typesList.unshift(<option selected disabled hidden id="type-0" key="0" value={null}>Type</option>);
-
-  const convention = types.reduce((acc, type) => {
-    if (type.type === selectedType) return type.convention
-    return acc;
-  }, null);
-
-  // create dropdown list options for difficulties dropdown
-  const difficultiesList = difficulties
-    .filter(difficulty => {
-      return difficulty.type === selectedType;
-    })
+  const difficultiesList = difficulties.filter(difficulty => difficulty.type_id === Number(selectedType))
     .map(difficulty => {
       return (
-        <option id={`difficulty-${difficulty._id}`} key={difficulty._id} value={difficulty.difficulty}>{difficulty.difficulty}</option>
+        <option key={difficulty._id} value={difficulty._id}>{difficulty.difficulty}</option>
       );
     })
-  difficultiesList.unshift(<option selected disabled hidden id="difficulty-0" key="0" value={null}>Difficulty</option>);
 
-  // render component
+  // Set placeholder value for route field of form based on the currently selected type
+  let convention; 
+  if (types[0]) convention = types.filter(type => type._id === Number(selectedType))[0].convention;
+
+  // Render component with dropdown lists, controlled form component values and handlers
   return (
     <div id="form-container">
+      <h1>What mountain did you climb today?</h1>
+      
       <form>
         <div id="activity-container">
-          {/* <label htmlFor="activity">What mountains did you climb today?</label> */}
-          <select id="activity" name="activity" onChange={handleFormChange}>
+          <select id="activity" name="activity" value={selectedActivity} onChange={handleFormChange}>
             {activitiesList}
           </select>
         </div>
 
         <div className="route-countainer">
           <div className="route-container-row">
-            {/* <label htmlFor="type">Type</label> */}
-            <select id="type" name="type" onChange={handleFormChange}>
+            <select id="type" name="type" value={selectedType} onChange={handleFormChange}>
               {typesList}
             </select>
 
-            {/* <label htmlFor="route">{convention}</label> */}
-            <input type="text" id="route" name="route" placeholder={convention} onChange={handleFormChange} />
+            <input type="text" id="route" name="route" placeholder={convention} value={currentRoute} onChange={handleFormChange} />
 
-            {/* <label htmlFor="difficulty">Difficulty</label> */}
-            <select id="difficulty" name="difficulty" onChange={handleFormChange}>
+            <select id="difficulty" name="difficulty" value={selectedDifficulty} onChange={handleFormChange}>
               {difficultiesList}
             </select>
 
-            {/* <label htmlFor="rating">Rating</label> */}
-            <select id="rating" name="rating" onChange={handleFormChange}>
-              <option></option>
-              <option selected disabled hidden value={null}>Rating</option>
+            <select id="rating" name="rating" value={selectedRating} onChange={handleFormChange}>
+              <option value="0">No rating</option>
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -91,29 +82,23 @@ const Form = (props) => {
           </div>
          
           <div className="route-container-row">
-            {/* <label htmlFor="location">Location</label> */}
-            <input type="text" id="location" name="location" placeholder="Location" onChange={handleFormChange} />
-
-            {/* <label htmlFor="region">State/Region</label> */}
-            <input type="text" id="region" name="region" placeholder="Region" onChange={handleFormChange} />
-
-            {/* <label htmlFor="country">Country</label> */}
-            <input type="text" id="country" name="country" placeholder="Country" onChange={handleFormChange} />
+            <input type="text" id="location" name="location" placeholder="Location" value={currentLocation} onChange={handleFormChange} />
+            <input type="text" id="region" name="region" placeholder="Region" value={currentRegion} onChange={handleFormChange} />
+            <input type="text" id="country" name="country" placeholder="Country" value={currentCountry} onChange={handleFormChange} />
           </div>
         </div>
 
         <div id="entry-container">
           <div id="dates">
             <label htmlFor="start-date">Start Date</label>
-            <input type="date" id="start-date" name="start-date" placeholder="test" onChange={handleFormChange} />
+            <input type="date" id="start-date" name="start-date" value={selectedStartDate} onChange={handleFormChange} />
 
             <label htmlFor="end-date">End Date</label>
-            <input type="date" id="end-date" name="end-date" onChange={handleFormChange} />
+            <input type="date" id="end-date" name="end-date" value={selectedEndDate} onChange={handleFormChange} />
           </div>
 
           <div id="note-container">
-            {/* <label htmlFor="note">Notes</label> */}
-            <textarea id='note' name='note' placeholder="Scribbles..." onChange={handleFormChange}></textarea>
+            <textarea id='note' name='note' placeholder="Scribbles..." value={currentNote} onChange={handleFormChange}></textarea>
           </div>
 
           <div>

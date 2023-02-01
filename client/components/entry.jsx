@@ -19,14 +19,15 @@ const Entry= (props) => {
     region, 
     country, 
     note, 
-    timestamp 
+    timestamp,
+    displayStartMonth
   } = props;
 
   return (
     <div id={`entry-item-${id}`} className="entry-item">
-      <div className="entry-item-start-month-year-container">
-        <span className="entry-item-start-month">{startMonth}</span>
-        <span className="entry-item-start-year">{startYear}</span>
+      <div className={displayStartMonth ? "entry-item-start-month-year-container month-banner" : "entry-item-start-month-year-container"}>
+        <span className="entry-item-start-month">{displayStartMonth ? startMonth : null}</span>
+        <span className="entry-item-start-year">{displayStartMonth ? startYear : null}</span>
       </div>
 
       <div className="entry-item-start-day-container">
@@ -39,7 +40,7 @@ const Entry= (props) => {
         <h3>{`${route} - ${type} (${difficulty}) ${rating}/5`}</h3>
       </div>
 
-      <div className="entry-item-end-month-year-container">
+      <div className={endMonth !== null ? "entry-item-end-month-year-container month-banner" : "entry-item-end-month-year-container"}>
         <span className="entry-item-start-month">{endMonth}</span>
         <span className="entry-item-start-year">{endYear}</span>
       </div>

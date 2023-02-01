@@ -28,14 +28,14 @@ body {
 
 /* form styles */ 
 #form-container {
-  width: 800px;
+  width: 900px;
   margin: auto;
   font-family: Arial, Helvetica, sans-serif;
 }
 
 #activity-container {
   margin: auto;
-  width: 800px;
+  width: 900px;
   margin-bottom: 10px;
 }
 
@@ -52,9 +52,9 @@ body {
 }
 
 #activity-container select {
-  width: 800px;
+  width: 900px;
   padding: 5px 5px 5px 5px;
-  font-size: 18px;
+  font-size: 14px;
   border-radius: 5px;
   background-color: rgba(253,253,252);
   color: rgb(41,41,41);
@@ -158,7 +158,7 @@ body {
 }
 
 #note {
-  width: 800px;
+  width: 900px;
   height: 150px;
   resize: none;
   font-size: 14px;
@@ -210,6 +210,12 @@ body {
 }
 
 /* start month/year */
+.month-banner {
+  background: url(../assets/sign.svg);
+  background-size: 100px;
+  background-repeat: no-repeat;
+}
+
 .entry-item-start-month-year-container {
   display: flex;
   flex-direction: column;
@@ -218,9 +224,6 @@ body {
   grid-column: 1;
   grid-row: 1;
   width: 100px;
-  background: url(../assets/sign.svg);
-  background-size: 100px;
-  background-repeat: no-repeat;
 }
 
 .entry-item-start-month-year-container span {
@@ -269,9 +272,9 @@ body {
   grid-column: 1;
   grid-row: 2;
   min-height: 100px;
-  background: url(../assets/sign.svg);
+  /* background: url(../assets/sign.svg);
   background-size: 100px;
-  background-repeat: no-repeat;
+  background-repeat: no-repeat; */
 }
 
 .entry-item-end-month-year-container span {

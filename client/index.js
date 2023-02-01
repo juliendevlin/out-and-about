@@ -4,17 +4,18 @@ import App from './app.jsx'
 
 /*
 --PUNCH LIST--
-  - controlled components
-  - conditional entry date appearance
-  - submit several routes in one entry
+  - update + delete *
+  - conditional entry date appearance *
+  - submit several routes in one entry *
   - auto complete
-  - update + delete
   - stars for rating
-  - collapsable form
-  - enable/disable form fields
+  - collapsable form (expands and collapses from h1 tag)
   - authentication
-  - UI/UX
+  - UI/UX (reorder form to be location/act,type,route/dif,rating/dates/notes/button)
   - client + server side error handling
+  - load a fixed amount of entries per page that you can toggle through
+  - image upload
+  - sort order for dropdowns
 */
 
 /*

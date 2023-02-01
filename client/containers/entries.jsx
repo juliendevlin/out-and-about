@@ -3,16 +3,31 @@ import Entry from '../components/entry.jsx'
 
 /* -- ENTRIES CONTAINER -- */
 const Entries = (props) => {
-  // destructure entries list prop
+  // Destructure entries from state
   const { entries } = props;
 
-  // create list of entry items
+  // Intialize variables to track date from previous iteration when creating list
+  let previousStartMonth = null;
+
+  // Create list of entry items
   const entryItemList = entries.map(entry => {
+    // convert dates to date objects
     const startDate = new Date(entry.start_date);
     const timestamp = new Date(entry.post_date).toLocaleString();
-
     let endDate;
     if (entry.end_date !== null) endDate = new Date(entry.end_date);
+
+    // set boolean prop for whether the start month should be displayed on an entry or not
+    let displayStartMonth;
+    const currentStartMonth = startDate.getMonth()
+    if (previousStartMonth === null || previousStartMonth !== currentStartMonth) {
+      displayStartMonth = true;
+      previousStartMonth = currentStartMonth;
+    }
+    else {
+      displayStartMonth = false;
+      previousStartMonth = currentStartMonth;
+    }
     
     return (
       <Entry
@@ -34,6 +49,7 @@ const Entries = (props) => {
         country={entry.country}
         note={entry.note}
         timestamp={timestamp}
+        displayStartMonth={displayStartMonth}
       />
     );
   });
@@ -47,3 +63,11 @@ const Entries = (props) => {
 }
 
 export default Entries;
+
+// dates
+  // declare previous start date var outside of loop
+  // declare displayMonth var outside of loop
+  // if previous start date's month === current start date's month set displayMonth to flase
+  // otherwise set to true
+
+  // in component add class that displays svg conditionally
