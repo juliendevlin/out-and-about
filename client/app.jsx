@@ -24,6 +24,7 @@ const App = () => {
   const [ selectedStartDate, setSelectedStartDate ] = useState('');
   const [ selectedEndDate, setSelectedEndDate ] = useState('');
   const [ currentNote, setCurrentNote ] = useState('');
+  const [ starHover, setStarHover ] = useState(0);
 
   // State of controlled update form component
   const [ selectedActivityForUpdate, setSelectedActivityForUpdate ] = useState('');
@@ -60,13 +61,19 @@ const App = () => {
     }
     if (e.target.name === 'difficulty') setSelectedDifficulty(Number(e.target.value));
     if (e.target.name === 'route') setCurrentRoute(e.target.value);
-    if (e.target.name === 'rating') setSelectedRating(Number(e.target.value));
     if (e.target.name === 'location')setCurrentLocation(e.target.value);
     if (e.target.name === 'region') setCurrentRegion(e.target.value);
     if (e.target.name === 'country') setCurrentCountry(e.target.value);
     if (e.target.name === 'start-date') setSelectedStartDate(e.target.value);
     if (e.target.name === 'end-date') setSelectedEndDate(e.target.value);
     if (e.target.name === 'note') setCurrentNote(e.target.value);
+
+    if (e.target.id === 'star-1') setSelectedRating(1);
+    if (e.target.id === 'star-2') setSelectedRating(2);
+    if (e.target.id === 'star-3') setSelectedRating(3);
+    if (e.target.id === 'star-4') setSelectedRating(4);
+    if (e.target.id === 'star-5') setSelectedRating(5);
+    if (e.target.id === 'star-clear') setSelectedRating(0);
   }
 
   // Handler to submit controlled main form component values and create new entry record
@@ -174,13 +181,19 @@ const App = () => {
     }
     if (e.target.name === 'difficulty') setSelectedDifficultyForUpdate(Number(e.target.value));
     if (e.target.name === 'route') setCurrentRouteForUpdate(e.target.value);
-    if (e.target.name === 'rating') setSelectedRatingForUpdate(Number(e.target.value));
     if (e.target.name === 'location')setCurrentLocationForUpdate(e.target.value);
     if (e.target.name === 'region') setCurrentRegionForUpdate(e.target.value);
     if (e.target.name === 'country') setCurrentCountryForUpdate(e.target.value);
     if (e.target.name === 'start-date') setSelectedStartDateForUpdate(e.target.value);
     if (e.target.name === 'end-date') setSelectedEndDateForUpdate(e.target.value);
     if (e.target.name === 'note') setCurrentNoteForUpdate(e.target.value);
+
+    if (e.target.id === 'star-1') setSelectedRatingForUpdate(1);
+    if (e.target.id === 'star-2') setSelectedRatingForUpdate(2);
+    if (e.target.id === 'star-3') setSelectedRatingForUpdate(3);
+    if (e.target.id === 'star-4') setSelectedRatingForUpdate(4);
+    if (e.target.id === 'star-5') setSelectedRatingForUpdate(5);
+    if (e.target.id === 'star-clear') setSelectedRatingForUpdate(0);
   }
 
   // Handler to update an entry
@@ -278,6 +291,17 @@ const App = () => {
     setDisplayMainForm(!displayMainForm);
   }
 
+  const handleStarHover = (e) => {
+    if (e.type === 'mouseenter') {
+      if (e.target.id === 'star-1') setStarHover(1);
+      if (e.target.id === 'star-2') setStarHover(2);
+      if (e.target.id === 'star-3') setStarHover(3);
+      if (e.target.id === 'star-4') setStarHover(4);
+      if (e.target.id === 'star-5') setStarHover(5);
+    }
+    if (e.type === 'mouseleave') setStarHover(0);
+  }
+
   // Fetch and update entry records state on mount
   useEffect(() => {
     const fetchEntries = async () => {
@@ -318,7 +342,7 @@ const App = () => {
     <div id='main-container'>
       <Header />
       <div className="title" onClick={toggleMainForm}>
-        <h1 className="">What mountain did you climb today?</h1>
+        <h1 className="">What mountains did you climb today?</h1>
         <img src="./assets/dropdown.svg" width="40px" />
       </div>
       <Form
@@ -340,6 +364,8 @@ const App = () => {
         handleFormSubmit={handleFormSubmit}
         displayMainForm={displayMainForm}
         purpose="main"
+        handleStarHover={handleStarHover}
+        starHover={starHover}
       />
       <div className="bottom-title"></div>
       <Entries
@@ -365,6 +391,8 @@ const App = () => {
         currentNoteForUpdate={currentNoteForUpdate}
         handleUpdateFormChange={handleUpdateFormChange}
         handleEntryUpdate={handleEntryUpdate}
+        handleStarHover={handleStarHover}
+        starHover={starHover}
       />
       <div className='footer'></div>
     </div>

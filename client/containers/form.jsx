@@ -21,7 +21,9 @@ const Form = (props) => {
     handleFormChange, 
     handleFormSubmit,
     displayMainForm,
-    purpose
+    purpose,
+    handleStarHover,
+    starHover
   } = props;
 
   // Create dropdown options for activities, types and difficulties based on state values
@@ -50,12 +52,36 @@ const Form = (props) => {
   if (types[0]) convention = types.filter(type => type._id === Number(selectedType))[0].convention;
 
   const displayStyle = {
-    // display: displayMainForm ? 'block' : 'none',
     maxHeight: displayMainForm ? '475px' : '0px',
     backgroundColor: purpose === 'main' ? '#e8e0d5' : 'rgb(244,242,237)'
   }
 
   const submitText = purpose === 'main' ? 'LOG' : 'FIX';
+
+  // set up star ratings for form
+  let starRating = [];
+  for (let i = 1; i <= 5; i++) {
+    starRating.push(
+      <svg
+        key={i}
+        id={`star-${i}`}
+        className="form-star"
+        onClick={handleFormChange}
+        onMouseEnter={handleStarHover}
+        onMouseLeave={handleStarHover}
+        width="25px" 
+        height="25px" 
+        viewBox="5 5 58 58" 
+        fill={starHover >= i || selectedRating >= i ? "rgb(31,81,63)" : "rgb(150,150,150)"}
+      >
+        <path d="M32.001,9.188l5.666,17.438l18.335,0l-14.833,10.777l5.666,17.438l-14.834,-10.777l-14.833,10.777l5.666,-17.438l-14.834,-10.777l18.335,0l5.666,-17.438Z"/>
+      </svg>
+    );
+  }
+
+  if (selectedRating !== 0) starRating.push(
+    <span key="clear" id="star-clear" className="form-star-clear" onClick={handleFormChange}>Clear</span>
+  );
 
   // Render component with dropdown lists, controlled form component values and handlers
   return (
@@ -93,38 +119,33 @@ const Form = (props) => {
 
         <div className="small-gap"></div>
 
-        <div className="form-row">
-          <select className="form-input form-activity" name="activity" value={selectedActivity} onChange={handleFormChange}>
-            {activitiesList}
-          </select>
+        <div className='route-row'>
+          <div className="form-row">
+            <select className="form-input form-activity" name="activity" value={selectedActivity} onChange={handleFormChange}>
+              {activitiesList}
+            </select>
 
-          <select className="form-input form-type" name="type" value={selectedType} onChange={handleFormChange}>
-              {typesList}
-          </select>
+            <select className="form-input form-type" name="type" value={selectedType} onChange={handleFormChange}>
+                {typesList}
+            </select>
 
-          <input 
-            className="form-input form-route" 
-            type="text"  
-            name="route" 
-            placeholder={convention} 
-            value={currentRoute} 
-            onChange={handleFormChange} 
-          />
-        </div>
+            <input 
+              className="form-input form-route" 
+              type="text"  
+              name="route" 
+              placeholder={convention} 
+              value={currentRoute} 
+              onChange={handleFormChange} 
+            />
+          </div>
+        
+          <div className="form-row">
+            <select className="form-input form-difficulty"  name="difficulty" value={selectedDifficulty} onChange={handleFormChange}>
+              {difficultiesList}
+            </select>
 
-        <div className="form-row">
-          <select className="form-input form-difficulty"  name="difficulty" value={selectedDifficulty} onChange={handleFormChange}>
-            {difficultiesList}
-          </select>
-
-          <select className="form-input form-rating"  name="rating" value={selectedRating} onChange={handleFormChange}>
-            <option value="0">No rating</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-          </select>
+            {starRating}
+          </div>
         </div>
 
         <div className="big-gap"></div>

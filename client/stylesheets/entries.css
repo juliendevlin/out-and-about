@@ -142,9 +142,16 @@
 .entry-header h3 {
   margin-top: 5px;
   margin-bottom: 5px;
+  margin-right: 10px;
   font-size: 16px;
   margin-left: 15px;
-  color: rgb(74,74,74)
+  color: rgb(74,74,74);
+  display: inline;
+}
+
+.entry-header svg {
+  position: relative;
+  top: 2px;
 }
 
 /* row 2 */
@@ -217,7 +224,7 @@
   flex-direction: column;
   align-items: end;
   background-color: rgb(244,242,237);
-  border-radius: 10px;
+  border-radius: 5px;
   padding: 10px;
 }
 

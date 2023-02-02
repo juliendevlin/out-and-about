@@ -20,7 +20,9 @@ const ConfirmUpdatePrompt = (props) => {
     selectedEndDateForUpdate,
     currentNoteForUpdate,
     handleUpdateFormChange,
-    handleEntryUpdate
+    handleEntryUpdate,
+    handleStarHover,
+    starHover
   } = props;
 
   const displayStyle = {
@@ -47,6 +49,8 @@ const ConfirmUpdatePrompt = (props) => {
         handleFormSubmit={handleEntryUpdate}
         displayMainForm={true}
         purpose="update"
+        handleStarHover={handleStarHover}
+        starHover={starHover}
       />
     : null
 

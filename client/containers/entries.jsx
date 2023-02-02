@@ -27,34 +27,11 @@ const Entries = (props) => {
     selectedEndDateForUpdate,
     currentNoteForUpdate,
     handleUpdateFormChange,
-    handleEntryUpdate
+    handleEntryUpdate,
+    handleStarHover,
+    starHover
   } = props;
 
-  // OG
-  // Intialize variables to track date from previous iteration when creating list
-  // let previousStartMonth = null;
-
-  // // Create list of entry items
-  // const entryItemList = entries.map(entry => {
-  //   // convert dates to date objects
-  //   const startDate = new Date(entry.start_date);
-  //   const endDate = entry.end_date !== null ? new Date(entry.end_date) : null;
-  //   const timestamp = new Date(entry.post_date).toLocaleString();
-
-  //   // set boolean prop for whether the start month should be displayed on an entry or not
-  //   let displayStartMonth;
-  //   const currentStartMonth = startDate.getMonth()
-
-  //   if (previousStartMonth === null || previousStartMonth !== currentStartMonth) {
-  //     displayStartMonth = true;
-  //     previousStartMonth = currentStartMonth;
-  //   }
-  //   else {
-  //     displayStartMonth = false;
-  //     previousStartMonth = currentStartMonth;
-  //   }
-
-  // TESTING
   let previousStartMonth;
   let previousEndMonth;
 
@@ -104,7 +81,6 @@ const Entries = (props) => {
         country={entry.country}
         note={entry.note}
         timestamp={timestamp}
-        // displayStartMonth={displayStartMonth}
         displayFirstMonth={displayFirstMonth}
         displayLastMonth={displayLastMonth}
         handleConfirmUpdate={handleConfirmUpdate}
@@ -136,6 +112,8 @@ const Entries = (props) => {
         currentNoteForUpdate={currentNoteForUpdate}
         handleUpdateFormChange={handleUpdateFormChange}
         handleEntryUpdate={handleEntryUpdate}
+        handleStarHover={handleStarHover}
+        starHover={starHover}
       />
       <ConfirmDeletePrompt
         confirmDelete={confirmDelete}

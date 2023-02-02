@@ -20,23 +20,24 @@ const Entry= (props) => {
     country, 
     note, 
     timestamp,
-    // displayStartMonth,
     displayFirstMonth,
     displayLastMonth,
     handleConfirmUpdate,
     handleConfirmDelete
   } = props;
 
+  let starRating = [];
+
+  for (let i = 0; i < rating; i++) {
+    starRating.push(
+      <svg key={i} fill="rgb(74,74,74)" width="17px" height="18px" viewBox="0 0 58 58">
+        <path id="star" d="M32.001,9.188l5.666,17.438l18.335,0l-14.833,10.777l5.666,17.438l-14.834,-10.777l-14.833,10.777l5.666,-17.438l-14.834,-10.777l18.335,0l5.666,-17.438Z"/>
+      </svg>
+    );
+  }
+
   return (
     <div className="entry">
-      {/* <div className={displayStartMonth ? "entry-start-container month-banner-start" : "entry-item-start-container"}>
-        <span className="entry-start-month">{displayStartMonth ? startMonth : null}</span>
-        <span className="entry-start-year">{displayStartMonth ? startYear : null}</span>
-      </div>
-
-      <div className="entry-start-day">
-        <span>{startDay}</span>
-      </div> */}
 
       <div className={displayFirstMonth ? "entry-start-container month-banner-start" : "entry-item-start-container"}>
         <span className="entry-start-month">{
@@ -62,17 +63,9 @@ const Entry= (props) => {
       <div className="entry-header">
         <h1>{`${location} - ${region}, ${country}`}</h1>
         <h2>{activity}</h2>
-        <h3>{`${route} - ${type} (${difficulty}) ${rating}/5`}</h3>
+        <h3>{`${route} - ${type} (${difficulty})`}</h3>
+        {starRating}
       </div>
-
-      {/* <div className={endMonth !== null ? "entry-end-container month-banner-end" : "entry-end-container"}>
-        <span className="entry-end-month">{endMonth}</span>
-        <span className="entry-end-year">{endYear}</span>
-      </div>
-
-      <div className="entry-end-day">
-        <span>{endDay}</span>
-      </div> */}
 
       <div className={displayLastMonth ? "entry-end-container month-banner-end" : "entry-end-container"}>
         <span className="entry-end-month">{displayLastMonth ? startMonth : null}</span>

@@ -4,9 +4,8 @@ import App from './app.jsx'
 
 /*
 --PUNCH LIST--
-  - submit several routes in one entry *
+  - submit several routes in one entry -> need to restructure state + routes + rendering...
   - image upload
-  - stars for rating
   - auto complete
   - refactor code
 

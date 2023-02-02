@@ -137,3 +137,27 @@ label {
   cursor: pointer;
   background-color: rgb(31,100,63);
 }
+
+.route-row {
+  margin-left: 25px;
+}
+
+.route-row path {
+  pointer-events: none;
+}
+
+.form-star {
+  position: relative;
+  top: 7px;
+}
+
+.form-star-clear {
+  color: rgb(125,125,125);
+  margin-left: 10px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.form-star-clear:hover {
+  color: rgb(100,100,100);
+}
