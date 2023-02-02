@@ -20,22 +20,43 @@ const Entry= (props) => {
     country, 
     note, 
     timestamp,
-    displayStartMonth,
+    // displayStartMonth,
+    displayFirstMonth,
+    displayLastMonth,
     handleConfirmUpdate,
     handleConfirmDelete
   } = props;
 
   return (
     <div className="entry">
-      <div className={displayStartMonth ? "entry-start-container month-banner-start" : "entry-item-start-container"}>
-        <span className="entry-start-month">{displayStartMonth ? startMonth : null}
-        </span>
+      {/* <div className={displayStartMonth ? "entry-start-container month-banner-start" : "entry-item-start-container"}>
+        <span className="entry-start-month">{displayStartMonth ? startMonth : null}</span>
         <span className="entry-start-year">{displayStartMonth ? startYear : null}</span>
       </div>
 
       <div className="entry-start-day">
-      <span>{startDay}</span>
-        {/* <span>{endDay ? endDay : startDay}</span> */}
+        <span>{startDay}</span>
+      </div> */}
+
+      <div className={displayFirstMonth ? "entry-start-container month-banner-start" : "entry-item-start-container"}>
+        <span className="entry-start-month">{
+          displayFirstMonth 
+            ? endMonth
+              ? endMonth
+              : startMonth 
+            : null
+          }</span>
+        <span className="entry-start-year">{
+          displayFirstMonth 
+            ? endYear
+              ? endYear
+              : startYear
+            : null
+        }</span>
+      </div>
+
+      <div className="entry-start-day">
+        <span>{endDay ? endDay : startDay}</span>
       </div>
 
       <div className="entry-header">
@@ -44,14 +65,22 @@ const Entry= (props) => {
         <h3>{`${route} - ${type} (${difficulty}) ${rating}/5`}</h3>
       </div>
 
-      <div className={endMonth !== null ? "entry-end-container month-banner-end" : "entry-end-container"}>
+      {/* <div className={endMonth !== null ? "entry-end-container month-banner-end" : "entry-end-container"}>
         <span className="entry-end-month">{endMonth}</span>
         <span className="entry-end-year">{endYear}</span>
       </div>
 
       <div className="entry-end-day">
         <span>{endDay}</span>
-        {/* <span>{endDay ? startDay : null}</span> */}
+      </div> */}
+
+      <div className={displayLastMonth ? "entry-end-container month-banner-end" : "entry-end-container"}>
+        <span className="entry-end-month">{displayLastMonth ? startMonth : null}</span>
+        <span className="entry-end-year">{displayLastMonth ? startYear : null}</span>
+      </div>
+
+      <div className="entry-end-day">
+        <span>{endDay ? startDay : endDay}</span>
       </div>
 
       <div className="entry-content">

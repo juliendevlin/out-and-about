@@ -366,6 +366,7 @@ const App = () => {
         handleUpdateFormChange={handleUpdateFormChange}
         handleEntryUpdate={handleEntryUpdate}
       />
+      <div className='footer'></div>
     </div>
   );
 };

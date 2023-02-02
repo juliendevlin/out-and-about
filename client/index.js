@@ -5,12 +5,6 @@ import App from './app.jsx'
 /*
 --PUNCH LIST--
   - submit several routes in one entry *
-  - entry UI/conditional entry date appearance *
-    first
-      if first === previousfirst -> don't display
-      if first === previouslast -> don't display
-    last
-      if last === first -> don't display
   - image upload
   - stars for rating
   - auto complete

@@ -30,28 +30,59 @@ const Entries = (props) => {
     handleEntryUpdate
   } = props;
 
+  // OG
   // Intialize variables to track date from previous iteration when creating list
-  let previousStartMonth = null;
+  // let previousStartMonth = null;
 
-  // Create list of entry items
+  // // Create list of entry items
+  // const entryItemList = entries.map(entry => {
+  //   // convert dates to date objects
+  //   const startDate = new Date(entry.start_date);
+  //   const endDate = entry.end_date !== null ? new Date(entry.end_date) : null;
+  //   const timestamp = new Date(entry.post_date).toLocaleString();
+
+  //   // set boolean prop for whether the start month should be displayed on an entry or not
+  //   let displayStartMonth;
+  //   const currentStartMonth = startDate.getMonth()
+
+  //   if (previousStartMonth === null || previousStartMonth !== currentStartMonth) {
+  //     displayStartMonth = true;
+  //     previousStartMonth = currentStartMonth;
+  //   }
+  //   else {
+  //     displayStartMonth = false;
+  //     previousStartMonth = currentStartMonth;
+  //   }
+
+  // TESTING
+  let previousStartMonth;
+  let previousEndMonth;
+
   const entryItemList = entries.map(entry => {
-    // convert dates to date objects
     const startDate = new Date(entry.start_date);
+    const endDate = entry.end_date !== null ? new Date(entry.end_date) : null;
     const timestamp = new Date(entry.post_date).toLocaleString();
-    let endDate;
-    if (entry.end_date !== null) endDate = new Date(entry.end_date);
 
-    // set boolean prop for whether the start month should be displayed on an entry or not
-    let displayStartMonth;
+    let displayFirstMonth;
+    let displayLastMonth;
     const currentStartMonth = startDate.getMonth()
-    if (previousStartMonth === null || previousStartMonth !== currentStartMonth) {
-      displayStartMonth = true;
-      previousStartMonth = currentStartMonth;
+    const currentEndMonth = endDate !== null ? endDate.getMonth() : null
+
+    if (currentEndMonth === null) {
+      if (previousStartMonth === undefined || previousStartMonth !== currentStartMonth) displayFirstMonth = true;
+      else displayFirstMonth = false;
+      displayLastMonth = false;
     }
-    else {
-      displayStartMonth = false;
-      previousStartMonth = currentStartMonth;
+    if (currentEndMonth !== null) {
+      if (currentStartMonth !== currentEndMonth) displayLastMonth = true
+      else displayLastMonth = false;
+
+      if (previousStartMonth === undefined || currentEndMonth !== previousStartMonth) displayFirstMonth = true;
+      else displayFirstMonth = false;
     }
+
+    previousStartMonth = currentStartMonth;
+    previousEndMonth = currentEndMonth;
     
     return (
       <Entry
@@ -73,7 +104,9 @@ const Entries = (props) => {
         country={entry.country}
         note={entry.note}
         timestamp={timestamp}
-        displayStartMonth={displayStartMonth}
+        // displayStartMonth={displayStartMonth}
+        displayFirstMonth={displayFirstMonth}
+        displayLastMonth={displayLastMonth}
         handleConfirmUpdate={handleConfirmUpdate}
         handleConfirmDelete={handleConfirmDelete}
       />
