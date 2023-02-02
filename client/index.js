@@ -5,16 +5,20 @@ import App from './app.jsx'
 /*
 --PUNCH LIST--
   - submit several routes in one entry *
-  - conditional entry date appearance *
-  - auto complete
+  - entry UI/conditional entry date appearance *
+    first
+      if first === previousfirst -> don't display
+      if first === previouslast -> don't display
+    last
+      if last === first -> don't display
+  - image upload
   - stars for rating
-  - collapsable form (expands and collapses from h1 tag)
-  - refactor code (break down components)
+  - auto complete
+  - refactor code
+
   - authentication
-  - UI/UX (reorder form to be location/act,type,route/dif,rating/dates/notes/button)
   - client + server side error handling
   - load a fixed amount of entries per page that you can toggle through
-  - image upload
   - sort order for dropdowns
   - Map/stats
   - 3rd party integrations (lighterpack, etc)
@@ -24,10 +28,10 @@ import App from './app.jsx'
 -- COMPONENT MAP --
 |-- Index
   |-- App 
-    |-- Form Container
-      |-- Form
+    |-- Form 
     |-- Entries Container
       |-- Entry Items
+      |-- Prompts
 */
 
 const root = createRoot(document.getElementById('root'));

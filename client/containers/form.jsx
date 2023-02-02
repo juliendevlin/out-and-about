@@ -52,7 +52,7 @@ const Form = (props) => {
   const displayStyle = {
     // display: displayMainForm ? 'block' : 'none',
     maxHeight: displayMainForm ? '475px' : '0px',
-    'background-color': purpose === 'main' ? '#e8e0d5' : 'rgb(244,242,237)'
+    backgroundColor: purpose === 'main' ? '#e8e0d5' : 'rgb(244,242,237)'
   }
 
   const submitText = purpose === 'main' ? 'LOG' : 'FIX';

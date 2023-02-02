@@ -82,7 +82,7 @@ const Entries = (props) => {
 
   // render entry items
   return(
-    <div id="entry-item-container">
+    <div id="entry-container">
       {entryItemList}
       <ConfirmUpdatePrompt
         confirmUpdate={confirmUpdate}
