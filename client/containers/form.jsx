@@ -19,7 +19,9 @@ const Form = (props) => {
     selectedEndDate,
     currentNote,
     handleFormChange, 
-    handleFormSubmit 
+    handleFormSubmit,
+    displayMainForm,
+    purpose
   } = props;
 
   // Create dropdown options for activities, types and difficulties based on state values
@@ -47,62 +49,121 @@ const Form = (props) => {
   let convention; 
   if (types[0]) convention = types.filter(type => type._id === Number(selectedType))[0].convention;
 
+  const displayStyle = {
+    // display: displayMainForm ? 'block' : 'none',
+    maxHeight: displayMainForm ? '475px' : '0px',
+    'background-color': purpose === 'main' ? '#e8e0d5' : 'rgb(244,242,237)'
+  }
+
+  const submitText = purpose === 'main' ? 'LOG' : 'FIX';
+
   // Render component with dropdown lists, controlled form component values and handlers
   return (
-    <div id="form-container">
+    <div className="form-container" style={displayStyle}>
       <form>
-        <div id="activity-container">
-          <select id="activity" name="activity" value={selectedActivity} onChange={handleFormChange}>
+        
+        <div className="form-row">
+          <input 
+            className="form-input form-location" 
+            type="text" 
+            name="location" 
+            placeholder="Location" 
+            value={currentLocation} 
+            onChange={handleFormChange} 
+          />
+
+          <input 
+            className="form-input form-region" 
+            type="text" 
+            name="region" 
+            placeholder="Region" 
+            value={currentRegion} 
+            onChange={handleFormChange} 
+          />
+
+          <input 
+            className="form-input form-country" 
+            type="text" 
+            name="country" 
+            placeholder="Country" 
+            value={currentCountry} 
+            onChange={handleFormChange} 
+          />
+        </div>
+
+        <div className="small-gap"></div>
+
+        <div className="form-row">
+          <select className="form-input form-activity" name="activity" value={selectedActivity} onChange={handleFormChange}>
             {activitiesList}
+          </select>
+
+          <select className="form-input form-type" name="type" value={selectedType} onChange={handleFormChange}>
+              {typesList}
+          </select>
+
+          <input 
+            className="form-input form-route" 
+            type="text"  
+            name="route" 
+            placeholder={convention} 
+            value={currentRoute} 
+            onChange={handleFormChange} 
+          />
+        </div>
+
+        <div className="form-row">
+          <select className="form-input form-difficulty"  name="difficulty" value={selectedDifficulty} onChange={handleFormChange}>
+            {difficultiesList}
+          </select>
+
+          <select className="form-input form-rating"  name="rating" value={selectedRating} onChange={handleFormChange}>
+            <option value="0">No rating</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
           </select>
         </div>
 
-        <div className="route-countainer">
-          <div className="route-container-row">
-            <select id="type" name="type" value={selectedType} onChange={handleFormChange}>
-              {typesList}
-            </select>
+        <div className="big-gap"></div>
 
-            <input type="text" id="route" name="route" placeholder={convention} value={currentRoute} onChange={handleFormChange} />
+        <div className="form-row">
+          <label htmlFor="start-date">Start Date</label>
+          <input 
+            type="date" 
+            className="form-input form-start-date" 
+            name="start-date" 
+            value={selectedStartDate} 
+            onChange={handleFormChange} 
+          />
 
-            <select id="difficulty" name="difficulty" value={selectedDifficulty} onChange={handleFormChange}>
-              {difficultiesList}
-            </select>
-
-            <select id="rating" name="rating" value={selectedRating} onChange={handleFormChange}>
-              <option value="0">No rating</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-            </select>
-          </div>
-         
-          <div className="route-container-row">
-            <input type="text" id="location" name="location" placeholder="Location" value={currentLocation} onChange={handleFormChange} />
-            <input type="text" id="region" name="region" placeholder="Region" value={currentRegion} onChange={handleFormChange} />
-            <input type="text" id="country" name="country" placeholder="Country" value={currentCountry} onChange={handleFormChange} />
-          </div>
+          <label htmlFor="end-date">End Date</label>
+          <input 
+            type="date" 
+            className="form-input form-end-date" 
+            name="end-date" 
+            value={selectedEndDate} 
+            onChange={handleFormChange} 
+          />
         </div>
 
-        <div id="entry-container">
-          <div id="dates">
-            <label htmlFor="start-date">Start Date</label>
-            <input type="date" id="start-date" name="start-date" value={selectedStartDate} onChange={handleFormChange} />
+        <textarea 
+          className='form-row form-input form-note' 
+          name='note' 
+          placeholder="Scribbles..." 
+          value={currentNote} 
+          onChange={handleFormChange}>
+        </textarea>
 
-            <label htmlFor="end-date">End Date</label>
-            <input type="date" id="end-date" name="end-date" value={selectedEndDate} onChange={handleFormChange} />
-          </div>
-
-          <div id="note-container">
-            <textarea id='note' name='note' placeholder="Scribbles..." value={currentNote} onChange={handleFormChange}></textarea>
-          </div>
-
-          <div>
-            <button onClick={handleFormSubmit}>Submit</button>
-          </div>
+        <div className="form-submit-container">
+          <button className="form-submit" onClick={handleFormSubmit}>
+            <img src="./assets/plus.svg" width="18px"/>
+            {submitText}
+          </button>
         </div>
+
       </form>
     </div>
   );

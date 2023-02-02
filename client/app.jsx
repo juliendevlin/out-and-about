@@ -41,6 +41,7 @@ const App = () => {
   // State of popup prompts
   const [ confirmDelete, setConfirmDelete ] = useState(false);
   const [ confirmUpdate, setConfirmUpdate ] = useState(false);
+  const [ displayMainForm, setDisplayMainForm ] = useState(false);
 
   // Handler to update state of controlled main form component values
   const handleFormChange = (e) => {
@@ -272,6 +273,11 @@ const App = () => {
     }
   }
 
+  // Toggle handler for main form
+  const toggleMainForm = () => {
+    setDisplayMainForm(!displayMainForm);
+  }
+
   // Fetch and update entry records state on mount
   useEffect(() => {
     const fetchEntries = async () => {
@@ -292,7 +298,7 @@ const App = () => {
       
       setActivities(formDropdowns.activities);
       setTypes(formDropdowns.types);
-      setDifficulties(formDropdowns.difficulties);
+      setDifficulties(formDropdowns.difficulties.sort((a, b) => a.sort - b.sort));
 
       const defaultActivity = formDropdowns.activities[0]._id
       setSelectedActivity(defaultActivity);
@@ -311,7 +317,10 @@ const App = () => {
   return(
     <div id='main-container'>
       <Header />
-      <h1 className="title">What mountain did you climb today?</h1>
+      <div className="title" onClick={toggleMainForm}>
+        <h1 className="">What mountain did you climb today?</h1>
+        <img src="./assets/dropdown.svg" width="40px" />
+      </div>
       <Form
         activities={activities}
         types={types}
@@ -329,7 +338,10 @@ const App = () => {
         currentNote={currentNote}
         handleFormChange={handleFormChange}
         handleFormSubmit={handleFormSubmit}
+        displayMainForm={displayMainForm}
+        purpose="main"
       />
+      <div className="bottom-title"></div>
       <Entries
         entries={entries}
         confirmDelete={confirmDelete}

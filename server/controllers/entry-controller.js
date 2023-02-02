@@ -97,11 +97,14 @@ entryController.setEntry = (req, res, next) => {
     })
     // Catch any errors from the transaction
     .catch(err => {
+      db.query('ROLLBACK');
+
       return next({
         log: `ERROR - entryController.setEntries: ${err}`,
         message: {err: 'Failed to create entry in database. Check server log for details.'}
       });
     });
+    
 }
 
 // Deletes an entry from database
@@ -116,7 +119,9 @@ entryController.deleteEntry = (req, res, next) => {
     .then(() => db.query('COMMIT'))
     .then(() => next())
     .catch((err) => {
-      next({
+      db.query('ROLLBACK');
+
+      return next({
         log: `ERROR - entryController.deleteEntries: ${err}`,
         message: {err: 'Failed to delete entry in database. Check server log for details.'}
       });

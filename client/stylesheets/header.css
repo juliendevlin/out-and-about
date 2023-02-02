@@ -1,0 +1,19 @@
+#header {
+  background-color: rgb(41,41,41);
+  box-shadow: 0px -40px 100px black;
+  margin-bottom: 50px;
+}
+
+#header-container {
+  display: flex;
+  width: 900px;
+  margin: auto;
+}
+
+#header-container h1 {
+  padding-left: 2px;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  color: rgb(244,242,237);
+  font-family:Arial, Helvetica, sans-serif;
+}

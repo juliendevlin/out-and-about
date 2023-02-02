@@ -1,0 +1,139 @@
+/* general styles */
+label {
+  margin-right: 10px;
+  font-size: 16px;
+  color: rgb(41,41,41);
+}
+
+.form-container {
+  width: 900px;
+  margin: 0px auto;
+  padding: 0px 15px 0px 15px;
+  background-color: #e8e0d5;
+  font-family: Arial, Helvetica, sans-serif;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.form-row {
+  margin-top: 10px;
+  padding: 1px;
+}
+
+.form-input {
+  padding: 7px;
+  font-size: 16px;
+  border-radius: 5px;
+  background-color: rgba(253,253,252);
+  color: rgb(41,41,41);
+  border: none;
+  box-shadow: 0px 0px 2px rgb(114,108,99);
+  margin-right: 10px;
+}
+
+.form-input:focus {
+  outline: none;
+}
+
+.small-gap {
+  height: 10px;
+}
+
+.big-gap {
+  height: 25px;
+}
+
+/* specific styles */
+
+.form-location {
+  width: 300px;
+}
+
+.form-region {
+  width: 200px;
+}
+
+.form-country {
+  width: 200px;
+}
+
+.form-activity {
+  width: 150px;
+}
+
+.form-type {
+  width: 150px;
+}
+
+.form-route {
+  width: 300px;
+}
+
+.form-difficulty {
+  width: 125px;
+}
+
+.form-rating {
+  width: 125px;
+}
+
+.form-start-date {
+  width: 150px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.form-end-date {
+  width: 150px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.form-note {
+  margin-left: 1px;
+  width: 868px;
+  height: 150px;
+  resize: none;
+  margin-right: 0px;
+  padding: 15px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+}
+
+.form-submit-container {
+  display: flex;
+  justify-content: end;
+}
+
+.form-submit {
+  padding: 5px 15px 5px 10px;
+  background-color: rgb(31, 125, 63);
+  color: rgb(244,242,237);
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0px 0px 1px rgb(44,44,44);
+  transition: background-color 0.3s;
+  margin-bottom: 15px;
+  margin-top: 10px;
+}
+
+.form-submit img {
+  position: relative;
+  top: 2px;
+  padding-right: 5px;
+  rotate: 0deg;
+  translate: 0px;
+  transition: rotate 0.3s, translate 0.3s;
+}
+
+.form-submit:hover img {
+  cursor: pointer;
+  background-color: rgb(31,100,63);
+  rotate: 0.5turn;
+  translate: -5px;
+}
+
+.form-submit:hover {
+  cursor: pointer;
+  background-color: rgb(31,100,63);
+}
