@@ -3,7 +3,6 @@ import Header from './containers/header.jsx';
 import Form from './containers/form.jsx';
 import Entries from './containers/entries.jsx';
 
-/* -- MAIN APP -- */
 const App = () => {
   // State of existing entry records
   const [ entries, setEntries ] = useState([]);
@@ -13,7 +12,7 @@ const App = () => {
   const [ types, setTypes ] = useState([]);
   const [ difficulties, setDifficulties ] = useState([]);
 
-  // State of conrolled form component
+  // State of controlled main form component
   const [ selectedActivity, setSelectedActivity ] = useState('');
   const [ selectedType, setSelectedType ] = useState('');
   const [ selectedDifficulty, setSelectedDifficulty ] = useState('');
@@ -26,10 +25,24 @@ const App = () => {
   const [ selectedEndDate, setSelectedEndDate ] = useState('');
   const [ currentNote, setCurrentNote ] = useState('');
 
+  // State of controlled update form component
+  const [ selectedActivityForUpdate, setSelectedActivityForUpdate ] = useState('');
+  const [ selectedTypeForUpdate, setSelectedTypeForUpdate ] = useState('');
+  const [ selectedDifficultyForUpdate, setSelectedDifficultyForUpdate ] = useState('');
+  const [ currentRouteForUpdate, setCurrentRouteForUpdate ] = useState('');
+  const [ selectedRatingForUpdate, setSelectedRatingForUpdate ] = useState(0);
+  const [ currentLocationForUpdate, setCurrentLocationForUpdate ] = useState('');
+  const [ currentRegionForUpdate, setCurrentRegionForUpdate ] = useState('');
+  const [ currentCountryForUpdate, setCurrentCountryForUpdate ] = useState('');
+  const [ selectedStartDateForUpdate, setSelectedStartDateForUpdate ] = useState('');
+  const [ selectedEndDateForUpdate, setSelectedEndDateForUpdate ] = useState('');
+  const [ currentNoteForUpdate, setCurrentNoteForUpdate ] = useState('');
+
   // State of popup prompts
   const [ confirmDelete, setConfirmDelete ] = useState(false);
+  const [ confirmUpdate, setConfirmUpdate ] = useState(false);
 
-  // Handler to update state of controlled form component values
+  // Handler to update state of controlled main form component values
   const handleFormChange = (e) => {
     if (e.target.name === 'activity') {
       setSelectedActivity(Number(e.target.value));
@@ -55,7 +68,7 @@ const App = () => {
     if (e.target.name === 'note') setCurrentNote(e.target.value);
   }
 
-  // Handler to submit controlled form component values and create new entry record
+  // Handler to submit controlled main form component values and create new entry record
   const handleFormSubmit = async (e) => {
     e.preventDefault();
 
@@ -69,7 +82,7 @@ const App = () => {
       difficultyId: selectedDifficulty,
       note: currentNote,
       startDate: selectedStartDate,
-      endDate: selectedEndDate,
+      endDate: selectedEndDate === '' ? null : selectedEndDate,
       rating: selectedRating
     }
 
@@ -86,7 +99,7 @@ const App = () => {
       if (response.status !== 201) {
         // Throw an error if request is not successful
         const error = await response.json();
-        throw new Error(error);
+        throw new Error(error.message);
       }
       else {
         // If successful, add the created entry to the state of entry records in the correctly sorted position
@@ -122,6 +135,105 @@ const App = () => {
     }
   }
 
+  // Handler to display prompt to confirm update
+  const handleConfirmUpdate = (entryId) => {
+    if (entryId) {
+    const selectedEntryForUpdate = entries.filter(entry => entry.entry_id === entryId)[0];
+
+    setSelectedActivityForUpdate(selectedEntryForUpdate.activity_id);
+    setSelectedTypeForUpdate(selectedEntryForUpdate.type_id);
+    setSelectedDifficultyForUpdate(selectedEntryForUpdate.difficulty_id);
+    setCurrentRouteForUpdate(selectedEntryForUpdate.route);
+    setSelectedRatingForUpdate(selectedEntryForUpdate.rating);
+    setCurrentLocationForUpdate(selectedEntryForUpdate.location);
+    setCurrentRegionForUpdate(selectedEntryForUpdate.region);
+    setCurrentCountryForUpdate(selectedEntryForUpdate.country);
+    setSelectedStartDateForUpdate(selectedEntryForUpdate.start_date.substring(0, 10));
+    setSelectedEndDateForUpdate(selectedEntryForUpdate.end_date ? selectedEntryForUpdate.end_date.substring(0, 10) : '');
+    setCurrentNoteForUpdate(selectedEntryForUpdate.note);
+    }
+
+    setConfirmUpdate(entryId);
+  }
+
+  // Handler to update state of controlled update form component values
+  const handleUpdateFormChange = (e) => {
+    if (e.target.name === 'activity') {
+      setSelectedActivityForUpdate(Number(e.target.value));
+
+      const defaultType = types.filter(type => type.activity_id === Number(e.target.value))[0]._id
+      setSelectedTypeForUpdate(defaultType)
+
+      const defaultDifficulty = difficulties.filter(difficulty => difficulty.type_id === defaultType)[0]._id
+      setSelectedDifficultyForUpdate(defaultDifficulty)
+    }
+    if (e.target.name === 'type') {
+      setSelectedTypeForUpdate(Number(e.target.value));
+      setSelectedDifficultyForUpdate(difficulties.filter(difficulty => difficulty.type_id === Number(e.target.value))[0]._id)
+    }
+    if (e.target.name === 'difficulty') setSelectedDifficultyForUpdate(Number(e.target.value));
+    if (e.target.name === 'route') setCurrentRouteForUpdate(e.target.value);
+    if (e.target.name === 'rating') setSelectedRatingForUpdate(Number(e.target.value));
+    if (e.target.name === 'location')setCurrentLocationForUpdate(e.target.value);
+    if (e.target.name === 'region') setCurrentRegionForUpdate(e.target.value);
+    if (e.target.name === 'country') setCurrentCountryForUpdate(e.target.value);
+    if (e.target.name === 'start-date') setSelectedStartDateForUpdate(e.target.value);
+    if (e.target.name === 'end-date') setSelectedEndDateForUpdate(e.target.value);
+    if (e.target.name === 'note') setCurrentNoteForUpdate(e.target.value);
+  }
+
+  // Handler to update an entry
+  const handleEntryUpdate = async (e) => {
+    e.preventDefault();
+
+    const entryToUpdate = {
+      entryId: confirmUpdate,
+      country: currentCountryForUpdate,
+      region: currentRegionForUpdate,
+      location: currentLocationForUpdate,
+      route: currentRouteForUpdate,
+      typeId: selectedTypeForUpdate,
+      difficultyId: selectedDifficultyForUpdate,
+      note: currentNoteForUpdate,
+      startDate: selectedStartDateForUpdate,
+      endDate: selectedEndDateForUpdate === '' ? null : selectedEndDateForUpdate,
+      rating: selectedRatingForUpdate
+    };
+
+    try {
+      const response = await fetch('/entries', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(entryToUpdate)
+      })
+
+      if (response.status !== 200) {
+        // Throw an error if request is not successful
+        const error = await response.json();
+        throw new Error(error.message);
+      }
+      else {
+        const updatedEntry = await response.json();
+
+        const updatedEntries = [
+          ...entries.filter(entry => entry.entry_id !== confirmUpdate),
+          ...updatedEntry
+        ]
+
+        setEntries(updatedEntries.sort((a, b) => {
+          return new Date(b.start_date) - new Date(a.start_date)
+        }));
+
+        setConfirmUpdate(false);
+      }
+    }
+    catch (err) {
+      console.log(err)
+    }
+  }
+
   // Handler to display prompt to confirm deletion
   const handleConfirmDelete = (entryId) => {
     setConfirmDelete(entryId);
@@ -132,26 +244,31 @@ const App = () => {
     // Create request body with passed in id of the entry
     const entryToDelete = { entryId }
 
-    // Send DELETE request
-    const response = await fetch('/entries', {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(entryToDelete)
-    })
+    try {
+      // Send DELETE request
+      const response = await fetch('/entries', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(entryToDelete)
+      })
 
-    if (response.status !== 200) {
-      // Throw an error if request is not successful
-      const error = await response.json();
-      throw new Error(error);
+      if (response.status !== 200) {
+        // Throw an error if request is not successful
+        const error = await response.json();
+        throw new Error(error);
+      }
+      else {
+        // If successful, remove deleted entry from rendered list of entries
+        setEntries(entries.filter((entry => entry.entry_id !== entryId)));
+
+        // Remove confirm prompt
+        setConfirmDelete(false);
+      }
     }
-    else {
-      // If successful, remove deleted entry from rendered list of entries
-      setEntries(entries.filter((entry => entry.entry_id !== entryId)));
-
-      // Remove confirm prompt
-      setConfirmDelete(false);
+    catch (err) {
+      console.log(err);
     }
   }
 
@@ -191,11 +308,10 @@ const App = () => {
   }, []);
 
   // render Header, Form, and Entries containers
-    // Drill down dropdown options, controlled form component values and handlers into Form
-    // Drill down entries records into Entries
   return(
     <div id='main-container'>
       <Header />
+      <h1 className="title">What mountain did you climb today?</h1>
       <Form
         activities={activities}
         types={types}
@@ -215,10 +331,28 @@ const App = () => {
         handleFormSubmit={handleFormSubmit}
       />
       <Entries
-        entries = {entries}
+        entries={entries}
         confirmDelete={confirmDelete}
         handleConfirmDelete={handleConfirmDelete}
         handleEntryDelete={handleEntryDelete}
+        confirmUpdate={confirmUpdate}
+        handleConfirmUpdate={handleConfirmUpdate}
+        activities={activities}
+        types={types}
+        difficulties={difficulties}
+        selectedActivityForUpdate={selectedActivityForUpdate}
+        selectedTypeForUpdate={selectedTypeForUpdate}
+        selectedDifficultyForUpdate={selectedDifficultyForUpdate}
+        currentRouteForUpdate={currentRouteForUpdate}
+        selectedRatingForUpdate={selectedRatingForUpdate}
+        currentLocationForUpdate={currentLocationForUpdate}
+        currentRegionForUpdate={currentRegionForUpdate}
+        currentCountryForUpdate={currentCountryForUpdate}
+        selectedStartDateForUpdate={selectedStartDateForUpdate}
+        selectedEndDateForUpdate={selectedEndDateForUpdate}
+        currentNoteForUpdate={currentNoteForUpdate}
+        handleUpdateFormChange={handleUpdateFormChange}
+        handleEntryUpdate={handleEntryUpdate}
       />
     </div>
   );

@@ -50,8 +50,6 @@ const Form = (props) => {
   // Render component with dropdown lists, controlled form component values and handlers
   return (
     <div id="form-container">
-      <h1>What mountain did you climb today?</h1>
-      
       <form>
         <div id="activity-container">
           <select id="activity" name="activity" value={selectedActivity} onChange={handleFormChange}>

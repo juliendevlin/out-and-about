@@ -4,8 +4,8 @@ const express = require('express');
 const app = express();
 const PORT = 3000;
 
-entryController = require('./controllers/entry-controller');
-formController = require('./controllers/form-controller');
+const entryController = require('./controllers/entry-controller');
+const formController = require('./controllers/form-controller');
 
 // parse all request bodies
 app.use(express.json());
@@ -26,7 +26,13 @@ app.post('/entries',
   });
 
 // Update entry route
-// todo
+app.put('/entries', 
+  entryController.deleteEntry,
+  entryController.setEntry,
+  entryController.getEntries,
+  (req, res) => {
+    return res.status(200).json(res.locals.entries);
+  });
 
 // Delete entry route
 app.delete('/entries',
@@ -66,6 +72,7 @@ const defaultErr = {
 
 app.use((err, req, res, next) => {
   const errorObj = Object.assign(defaultErr, err);
+  console.log(errorObj.log);
   return res.status(errorObj.status).json(errorObj.message);
 });
 

@@ -7,14 +7,16 @@ const ConfirmDeletePrompt = (props) => {
   } = props;
 
   const displayStyle = {
-    display: confirmDelete ? 'block' : 'none'
+    display: confirmDelete ? 'flex' : 'none'
   }
 
   return (
-    <div className="prompt" style={displayStyle}>
-      <p>Are you sure you want to delete this entry?</p>
-      <button onClick={() => handleEntryDelete(confirmDelete)}>Yes</button>
-      <button onClick={() => handleConfirmDelete(false)}>No</button>
+    <div className="prompt-bg" style={displayStyle}>
+      <div className="prompt">
+        <p>Are you sure you want to delete this entry?</p>
+        <button onClick={() => handleEntryDelete(confirmDelete)}>Yes</button>
+        <button onClick={() => handleConfirmDelete(false)}>No</button>
+      </div>
     </div>
   );
 }

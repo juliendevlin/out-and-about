@@ -1,14 +1,33 @@
 import React from 'react';
-import Entry from '../components/entry.jsx'
-import ConfirmDeletePrompt from '../components/confirm-delete-prompt.jsx'
+import Entry from '../components/entry.jsx';
+import ConfirmDeletePrompt from '../components/confirm-delete-prompt.jsx';
+import ConfirmUpdatePrompt from '../components/confirm-update-prompt.jsx';
 
 const Entries = (props) => {
   // Destructure entries from state
   const { 
-    entries, 
-    handleEntryDelete,
+    entries,
     confirmDelete,
-    handleConfirmDelete
+    handleConfirmDelete, 
+    handleEntryDelete,
+    confirmUpdate,
+    handleConfirmUpdate,
+    activities,
+    types,
+    difficulties,
+    selectedActivityForUpdate,
+    selectedTypeForUpdate,
+    selectedDifficultyForUpdate,
+    currentRouteForUpdate,
+    selectedRatingForUpdate,
+    currentLocationForUpdate,
+    currentRegionForUpdate,
+    currentCountryForUpdate,
+    selectedStartDateForUpdate,
+    selectedEndDateForUpdate,
+    currentNoteForUpdate,
+    handleUpdateFormChange,
+    handleEntryUpdate
   } = props;
 
   // Intialize variables to track date from previous iteration when creating list
@@ -55,6 +74,7 @@ const Entries = (props) => {
         note={entry.note}
         timestamp={timestamp}
         displayStartMonth={displayStartMonth}
+        handleConfirmUpdate={handleConfirmUpdate}
         handleConfirmDelete={handleConfirmDelete}
       />
     );
@@ -64,10 +84,30 @@ const Entries = (props) => {
   return(
     <div id="entry-item-container">
       {entryItemList}
+      <ConfirmUpdatePrompt
+        confirmUpdate={confirmUpdate}
+        handleConfirmUpdate={handleConfirmUpdate}
+        activities={activities}
+        types={types}
+        difficulties={difficulties}
+        selectedActivityForUpdate={selectedActivityForUpdate}
+        selectedTypeForUpdate={selectedTypeForUpdate}
+        selectedDifficultyForUpdate={selectedDifficultyForUpdate}
+        currentRouteForUpdate={currentRouteForUpdate}
+        selectedRatingForUpdate={selectedRatingForUpdate}
+        currentLocationForUpdate={currentLocationForUpdate}
+        currentRegionForUpdate={currentRegionForUpdate}
+        currentCountryForUpdate={currentCountryForUpdate}
+        selectedStartDateForUpdate={selectedStartDateForUpdate}
+        selectedEndDateForUpdate={selectedEndDateForUpdate}
+        currentNoteForUpdate={currentNoteForUpdate}
+        handleUpdateFormChange={handleUpdateFormChange}
+        handleEntryUpdate={handleEntryUpdate}
+      />
       <ConfirmDeletePrompt
         confirmDelete={confirmDelete}
-        handleEntryDelete={handleEntryDelete}
         handleConfirmDelete={handleConfirmDelete}
+        handleEntryDelete={handleEntryDelete}
       />
     </div>
   );

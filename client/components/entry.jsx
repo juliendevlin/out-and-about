@@ -21,6 +21,7 @@ const Entry= (props) => {
     note, 
     timestamp,
     displayStartMonth,
+    handleConfirmUpdate,
     handleConfirmDelete
   } = props;
 
@@ -55,7 +56,7 @@ const Entry= (props) => {
         <small>{`Posted on ${timestamp}`}</small>
       </div>
 
-      <button className="entry-buttons">Update Me</button>
+      <button className="entry-buttons" onClick={() => handleConfirmUpdate(id)}>Update Me</button>
       <button className="entry-buttons" onClick={() => handleConfirmDelete(id)}>Delete Me</button>
 
       <hr className="entry-item-divider" />

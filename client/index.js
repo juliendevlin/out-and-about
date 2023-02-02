@@ -4,10 +4,8 @@ import App from './app.jsx'
 
 /*
 --PUNCH LIST--
-  - update *
-    
-  - conditional entry date appearance *
   - submit several routes in one entry *
+  - conditional entry date appearance *
   - auto complete
   - stars for rating
   - collapsable form (expands and collapses from h1 tag)
