@@ -89,6 +89,10 @@ const Form = (props) => {
       <form>
         
         <div className="form-row">
+          <svg className="addRowButton" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+            <path fillRule="evenodd" clipRule="evenodd" d="M13 4C13 3.44772 12.5523 3 12 3C11.4477 3 11 3.44772 11 4V11H4C3.44772 11 3 11.4477 3 12C3 12.5523 3.44772 13 4 13H11V20C11 20.5523 11.4477 21 12 21C12.5523 21 13 20.5523 13 20V13H20C20.5523 13 21 12.5523 21 12C21 11.4477 20.5523 11 20 11H13V4Z" fill="rgb(31, 125, 63)" />
+          </svg>
+
           <input 
             className="form-input form-location" 
             type="text" 
@@ -96,6 +100,7 @@ const Form = (props) => {
             placeholder="Location" 
             value={currentLocation} 
             onChange={handleFormChange} 
+            autoComplete="off"
           />
 
           <input 
@@ -104,7 +109,8 @@ const Form = (props) => {
             name="region" 
             placeholder="Region" 
             value={currentRegion} 
-            onChange={handleFormChange} 
+            onChange={handleFormChange}
+            autoComplete="off"
           />
 
           <input 
@@ -113,7 +119,8 @@ const Form = (props) => {
             name="country" 
             placeholder="Country" 
             value={currentCountry} 
-            onChange={handleFormChange} 
+            onChange={handleFormChange}
+            autoComplete="off"
           />
         </div>
 
@@ -121,6 +128,10 @@ const Form = (props) => {
 
         <div className='route-row'>
           <div className="form-row">
+            <svg className="addRowButton" width="20px" height="20px" viewBox="0 0 24 24" fill="none">
+              <path fillRule="evenodd" clipRule="evenodd" d="M13 4C13 3.44772 12.5523 3 12 3C11.4477 3 11 3.44772 11 4V11H4C3.44772 11 3 11.4477 3 12C3 12.5523 3.44772 13 4 13H11V20C11 20.5523 11.4477 21 12 21C12.5523 21 13 20.5523 13 20V13H20C20.5523 13 21 12.5523 21 12C21 11.4477 20.5523 11 20 11H13V4Z" fill="rgb(31, 125, 63)" />
+            </svg>
+
             <select className="form-input form-activity" name="activity" value={selectedActivity} onChange={handleFormChange}>
               {activitiesList}
             </select>
@@ -136,10 +147,11 @@ const Form = (props) => {
               placeholder={convention} 
               value={currentRoute} 
               onChange={handleFormChange} 
+              autoComplete="off"
             />
           </div>
         
-          <div className="form-row">
+          <div className="form-row form-row-rating">
             <select className="form-input form-difficulty"  name="difficulty" value={selectedDifficulty} onChange={handleFormChange}>
               {difficultiesList}
             </select>
@@ -177,7 +189,7 @@ const Form = (props) => {
           value={currentNote} 
           onChange={handleFormChange}>
         </textarea>
-
+        {/* <input className="test" type="file" accept="image/*"></input> */}
         <div className="form-submit-container">
           <button className="form-submit" onClick={handleFormSubmit}>
             <img src="./assets/plus.svg" width="18px"/>

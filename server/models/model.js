@@ -1,8 +1,7 @@
 // connect to db and export pool
-// link to schema: 
 const { Pool } = require('pg');
 
-const PG_URI = 'postgres://vizmszft:JuJIfMxD6k-PLmi_wdaoQXiGMAJxPdz6@raja.db.elephantsql.com/vizmszft';
+// const PG_URI = [insert postgresql uri]
 
 const pool = new Pool({
   connectionString: PG_URI
