@@ -1,5 +1,5 @@
 # Out & About
-## A journaling app for ski bums, dirt bags, mountaineers, or all of the above. (AKA a glorified form… but a full-stack form!)  
+## A journaling app for ski bums, dirt bags, mountaineers, or all of the above.
 &emsp;  
 ### Punch List  
 * submit several locations/routes as part of one entry
