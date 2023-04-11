@@ -1,7 +1,6 @@
 # Out & About
-## A journaling app for ski bums, dirt bags, mountaineers, or all of the above.
-&emsp;  
-### Future Work 
+### A journaling app for ski bums, dirt bags, mountaineers, or all of the above.
+#### Future Work 
 * submit several locations/routes as part of one entry
 * image uploads
 * auto complete for existing entries 
@@ -11,19 +10,16 @@
 * pagination
 * 3rd party integrations (lighterpack)
 * user feeds
-* expanded user-facing error handling
-&emsp;   
-&emsp;  
-### React Component Layout  
+* expanded user-facing error handling 
+#### React Component Layout  
 |-- Index  
 &emsp;|-- App 
 &emsp;&emsp;|-- Form   
 &emsp;&emsp;|-- Entries Container  
 &emsp;&emsp;&emsp;|-- Entry Items  
 &emsp;&emsp;&emsp;|-- Update Prompt  
-&emsp;&emsp;&emsp;|-- Delete Prompt  
-&emsp;  
-### Server Layout  
+&emsp;&emsp;&emsp;|-- Delete Prompt   
+#### Server Layout  
 |-- server  
 &emsp;|-- entries  
 &emsp;&emsp;|-- GET  
@@ -31,7 +27,6 @@
 &emsp;&emsp;|-- PUT  
 &emsp;&emsp;|-- DELETE  
 &emsp;|-- form  
-&emsp;&emsp;|-- GET  
-&emsp;  
-### Database Schema  
+&emsp;&emsp;|-- GET    
+#### Database Schema  
 ![schema](./docs/schema.png)
